@@ -14,7 +14,9 @@ export class UsersController {
 
   @Post()
   async createUser(@Body() user: any) {
-    return this.usersService.createUser(user);
+    const userId = await this.usersService.createUser(user);
+
+    return this.usersService.getUserById(userId);
   }
 
   @Delete()

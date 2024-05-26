@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { User, UserDocument } from "./users.schema";
-import { OutputPaginatedUsersType, UsersDBType } from "./users.types";
+import {OutputPaginatedUsersType, UsersDBType, UserViewModelType} from "./users.types";
 
 @Injectable()
 export class UsersRepository {
@@ -59,12 +59,27 @@ export class UsersRepository {
 
   }
 
-  async deleteUser(id: string) {
+  async deleteUser(id: string): Promise<void> {
     const result = await this.userModel.deleteOne({_id: id}).exec()
 
     if (result.deletedCount === 0) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     }
     return
+  }
+
+  async getUserById(id: string): Promise<UserViewModelType> {
+    const user = await this.userModel.findOne({_id: id}).exec()
+
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+
+    return {
+      id: user._id.toString(),
+      userInfo: user.userInfo,
+      userConfirmation: user.userConfirmation,
+      createdAt: user.createdAt
+    }
   }
 }

@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { InputUsersType, OutputPaginatedUsersType } from "./users.types";
+import {InputUsersType, OutputPaginatedUsersType, UserViewModelType} from "./users.types";
 import bcrypt from 'bcrypt'
 import { UsersRepository } from "./users.repository";
 
@@ -32,7 +32,11 @@ export class UsersService {
     return await this.usersRepository.create(newUser)
   }
 
-  async deleteUser(id: string){
+  async deleteUser(id: string): Promise<void>{
     return await this.usersRepository.deleteUser(id)
+  }
+
+  async getUserById(id: string): Promise<UserViewModelType> {
+    return await this.usersRepository.getUserById(id)
   }
 }

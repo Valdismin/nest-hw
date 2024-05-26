@@ -5,39 +5,23 @@ import { HydratedDocument } from "mongoose";
 export class User {
   @Prop()
   userInfo: {
-    login: {
-      type: string,
-      required: true
-    },
-    email: {
-      type: string,
-      required: true
-    },
+    login: string,
+    email: string,
     hash: string,
     salt: string
   }
 
   @Prop()
   userConfirmation: {
-    confirmed: {
-      type: boolean,
-      required: true
-    },
-    confirmCode: {
-      type: string,
-      required: true
-    },
-    expirationTime: {
-      type: Date,
-      required: true
+    confirmed: boolean,
+    confirmCode: string,
+    expirationTime: Date
     }
-  }
+
 
   @Prop()
-  createdAt: {
-    type: string,
-    required: true
-  }
+  createdAt: string
+
 }
 
 export type UserDocument = HydratedDocument<User>;
