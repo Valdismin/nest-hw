@@ -23,8 +23,10 @@ export type OutputPaginatedUsersType = {
 
 export type UserViewModelType = {
   id: string,
-  userInfo: UserInfoType,
-  userConfirmation: userConfirmationType,
+  // userInfo: UserInfoType,
+  // userConfirmation: userConfirmationType,
+  email: string,
+  login: string,
   createdAt: string,
 }
 

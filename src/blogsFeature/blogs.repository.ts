@@ -41,7 +41,6 @@ export class BlogsRepository {
 
   async getBlogById(id: string): Promise<BlogViewModelType> {
     const blog = await this.blogModel.findOne({ _id: id }).exec();
-
     if (!blog) {
       throw new HttpException("Blog not found", HttpStatus.NOT_FOUND);
     }

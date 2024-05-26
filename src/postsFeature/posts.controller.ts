@@ -1,4 +1,16 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Query } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpException,
+  HttpStatus,
+  Param,
+  Post,
+  Put,
+  Query
+} from "@nestjs/common";
 import { PostsService } from "./posts.service";
 import { InputPostType, OutputPaginatedPostType, PostViewModelType } from "./posts.types";
 import { queryHelper } from "../utils";
@@ -34,12 +46,14 @@ export class PostsController {
   }
 
   @Put(':id')
+  @HttpCode(204)
   async updatePost(@Body() post: InputPostType, @Param('id') id: string): Promise<void> {
    await this.postsService.updatePost(post, id);
     return
   }
 
   @Delete(':id')
+  @HttpCode(204)
   async deletePost(@Param('id') id: string): Promise<void> {
     await this.postsService.deletePost(id);
     return

@@ -1,3 +1,5 @@
+import {UserViewModelType} from "./usersFeature/users.types";
+
 export const queryHelper = (query: any) => {
   return {
     pageNumber: query.pageNumber ? +query.pageNumber : 1,
@@ -13,11 +15,21 @@ export const queryHelper = (query: any) => {
 export const blogsMapper = (blogs:any) => {
   return blogs.map((blog:any) => ({
     id: blog._id,
-    title: blog.title,
+    name: blog.name,
     description: blog.description,
     websiteUrl: blog.websiteUrl,
     createdAt: blog.createdAt,
     isMembership: blog.isMembership,
   }))
 
+}
+
+
+export const userMapper = (user:UserViewModelType) => {
+    return {
+        id: user.id,
+        login: user.login,
+        email: user.email,
+        createdAt: user.createdAt,
+    }
 }

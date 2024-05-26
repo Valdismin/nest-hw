@@ -26,17 +26,8 @@ export type BlogViewModelType = {
   isMembership?: boolean;
 }
 
-export type OutputPaginatedBlogType = {
-  id: ObjectId,
-  title: string,
-  description: string,
-  websiteUrl: string,
-  createdAt?: string,
-  isMembership?: boolean
-}
-
 export type OutputPaginatedBlogsType = {
-  items: OutputPaginatedBlogType[],
+  items: BlogViewModelType[],
   totalCount: number,
   pagesCount: number,
   page: string,

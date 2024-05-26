@@ -3,6 +3,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { User, UserDocument } from "./users.schema";
 import {OutputPaginatedUsersType, UsersDBType, UserViewModelType} from "./users.types";
+import {userMapper} from "../utils";
 
 @Injectable()
 export class UsersRepository {
@@ -20,28 +21,21 @@ export class UsersRepository {
 
       if (query.searchLoginTerm) {
         const searchLoginRegex = new RegExp(query.searchLoginTerm, 'i');
-        searchConditions.push({'userInfo.login': searchLoginRegex});
+        searchConditions.push({'login': searchLoginRegex});
       }
 
       if (query.searchEmailTerm) {
         const searchEmailRegex = new RegExp(query.searchEmailTerm, 'i');
-        searchConditions.push({'userInfo.email': searchEmailRegex});
+        searchConditions.push({'email': searchEmailRegex});
       }
 
       const findQuery = searchConditions.length ? {$or: searchConditions} : {};
-
       try {
         const items: any = await this.userModel.find(findQuery).sort({[query.sortBy]: query.sortDirection})
           .skip((query.pageNumber - 1) * query.pageSize)
           .limit(query.pageSize)
-
-        let mappedItems = items.map((item: UsersDBType) => {
-          return {
-            id: item._id,
-            userInfo: item.userInfo,
-            userConfirmation: item.userConfirmation,
-            createdAt: item.createdAt
-          }
+        let mappedItems = items.map((item: UserViewModelType) => {
+          return userMapper(item)
         })
 
         const c = await this.userModel.countDocuments(findQuery).exec();
@@ -77,8 +71,8 @@ export class UsersRepository {
 
     return {
       id: user._id.toString(),
-      userInfo: user.userInfo,
-      userConfirmation: user.userConfirmation,
+      email: user.email,
+      login: user.login,
       createdAt: user.createdAt
     }
   }
